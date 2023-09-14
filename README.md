@@ -1,29 +1,41 @@
 # textml
 Convert textual notes into usable html.
 
-Program accepts any .txt file or a folder/directory of .txt files and converts them to .html files for use in webpages.
-
-# How to Run
+# How to Install 
 
 **In command line:**
 
-Install python requirements 
+Clone the Repo
 
-`pip install -r requirements.txt`
-
+`git clone https://github.com/ijacobs-cpa/textml.git`
 
 run the program 
 
-`python main.py <options> [file/directory]`
+```
+python main.py <options> 
+or
+python main.py [file/directory]
+```
 
-# Commands
+# Command Flags
 
-Available command options:
+<!-- Available command options:
 ```
 -v,--version - Displays the version of the program
 -h,--help - Displays a help message
-```
+``` -->
 
+| Command   | Description |
+| --------- | ----------- |
+| -v, --version | Displays version of the program |
+| -h, --help | Displays a help message |
+
+# Features
+
+Program accepts any .txt file or a folder/directory of .txt files and converts them to .html files for use in webpages.
+
+# License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 
