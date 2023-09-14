@@ -23,6 +23,22 @@ python main.py <options>
 or
 python main.py [file/directory]
 ```
+## Examples
+---
+
+Converting a file:
+
+`python3 main.py myfile.txt`
+
+Converting all files in a directory:
+
+`python3 main.py mydirectory/`
+
+Running Commands:
+
+`python3 main.py -v`
+
+NOTE: Current version is still a WIP
 
 # Command Flags
 
