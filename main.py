@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import time
 import sys
 import os
 
 class Metadata:
-    version = "v0.1.0"
+    version = "v0.1.1"
 
 def writeHTML5Header():
     header = "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Filename</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n"    
@@ -85,9 +85,16 @@ def main():
     else: # If not a found file or directory check for supported argument 
         if userInput == "-v" or userInput == "--version":   
             md = Metadata()
-            print(md.version)
-        elif userInput == "-h" or userInput == "--help"
-
+            print("\ntextml " + Metadata.version)
+        elif userInput == "-h" or userInput == "--help":
+            print("textml " + Metadata.version)
+            print("Usage:\n python3 main.py <commands> [input files]\n")
+            print("Optional Commands:")
+            print("------------------")
+            print("-v,--version - Prints the current version of the program")
+            print("-h,--help - Prints a help message for the program")
+        else:
+            print("\nInvalid arguments provided!\nUse --help or -h for more info")
 
 if (__name__ == "__main__"):
     main()
