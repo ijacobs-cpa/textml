@@ -75,18 +75,20 @@ def main():
             convertHTML(userInput, outDir)
         else: 
             Exception("Error!: Invalid file type")
-    elif (os.path.isdir(userInput)):          # If not a file check if it is a directory
-        inputFiles = os.listdir(userInput)      # Retriving list of all files in directory
+    elif (os.path.isdir(userInput)):    # If not a file check if it is a directory                                     
+        inputFiles = os.listdir(userInput)              # Retriving list of all files in directory
+
         for file in inputFiles:
             if ".txt" in file:                                  # Checking if each file's type is supported before converting
                 convertHTML(userInput + file, outDir, True)     
             else: 
                 raise Exception("Error!: Invalid file type")    
+
     else: # If not a found file or directory check for supported argument 
         if userInput == "-v" or userInput == "--version":   
             md = Metadata()
             print("\ntextml " + Metadata.version)
-        elif userInput == "-h" or userInput == "--help":
+        elif userInput == "-h" or userInput == "--help":        
             print("textml " + Metadata.version)
             print("Usage:\n python3 main.py <commands> [input files]\n")
             print("Optional Commands:")
@@ -94,7 +96,7 @@ def main():
             print("-v,--version - Prints the current version of the program")
             print("-h,--help - Prints a help message for the program")
         else:
-            print("\nInvalid arguments provided!\nUse --help or -h for more info")
+            print("\nInvalid arguments provided!\nUse --help or -h flag for more info")
 
 if (__name__ == "__main__"):
     main()
