@@ -72,7 +72,7 @@ def main():
 
     if userInput.find(".") != -1:               # Checking if the passed argument is a file
         if ".txt" in userInput:
-            convertHTML(userInput, outDir)
+            convertHTML(userInput, outDir, True)
         else: 
             Exception("Error!: Invalid file type")
     elif (os.path.isdir(userInput)):    # If not a file check if it is a directory                                     
