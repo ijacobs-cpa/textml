@@ -5,9 +5,16 @@ Convert textual notes into usable html.
 
 **In command line:**
 
+Make sure python is installed:
+
+`$ python3 --version`
+
 Clone the Repo
 
-`git clone https://github.com/ijacobs-cpa/textml.git`
+```
+git clone https://github.com/ijacobs-cpa/textml.git
+cd textml/ 
+```
 
 run the program 
 
