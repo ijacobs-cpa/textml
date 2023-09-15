@@ -57,6 +57,8 @@ NOTE: Current version is still a WIP
 
 Program accepts any .txt file or a folder/directory of .txt files and converts them to .html files for use in webpages.
 
+More features to be included
+
 # License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
