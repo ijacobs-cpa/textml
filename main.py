@@ -12,12 +12,12 @@ def writeHTML5Header():
 
     return header
 
-def defaultDirSetup():
-    if os.path.isdir("textml"):         # Check if output dir exists
-        oldFiles = os.listdir("textml") # Removing each file in dir before deleting
+def defaultDirSetup(dir):
+    if os.path.isdir(dir):         # Check if output dir exists
+        oldFiles = os.listdir(dir) # Removing each file in dir before deleting
         if len(oldFiles) > 0:
             for file in oldFiles:
-                os.remove("textml/" + file)
+                os.remove(dir + "/" + file)
 
         os.rmdir('textml')      # Removing directory
 
@@ -66,7 +66,7 @@ def main():
         raise Exception("ERROR!: More than 1 file/argument passed to program")
 
     outDir = "textml/"              # Setting default output directory
-    defaultDirSetup()               # Clearing and remaking directory
+    defaultDirSetup("textml")               # Clearing and remaking directory
 
     userInput = sys.argv[1]      
 
