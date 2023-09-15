@@ -13,36 +13,38 @@ More features to be included
 
 Make sure python is installed:
 
-`$ python3 --version`
+`$ python --version`
 
 Clone the Repo
 
 ```
-git clone https://github.com/ijacobs-cpa/textml.git
-cd textml/ 
+$ git clone https://github.com/ijacobs-cpa/textml.git
+$ cd textml/ 
 ```
 
 run the program 
 
-```
-python main.py <options> 
+`$ python main.py <options> `
+
 or
-python main.py [file/directory]
-```
+
+`$ python main.py [file/directory]`
+
+
 ## Examples
 ---
 
 Converting a file:
 
-`python3 main.py myfile.txt`
+`$ python main.py myfile.txt`
 
 Converting all files in a directory:
 
-`python3 main.py mydirectory/`
+`$ python main.py mydirectory/`
 
 Running Commands:
 
-`python3 main.py -v`
+`$ python main.py -v`
 
 NOTE: Current version is still a WIP
 
