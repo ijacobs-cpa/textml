@@ -90,7 +90,9 @@ def main():
             print("\ntextml " + Metadata.version)
         elif userInput == "-h" or userInput == "--help":        
             print("textml " + Metadata.version)
-            print("Usage:\n python3 main.py <commands> [input files]\n")
+            print("Usage:\n python3 main.py [input files]")
+            print("     or")
+            print(" python3 main.py <commands>\n")
             print("Optional Commands:")
             print("------------------")
             print("-v,--version - Prints the current version of the program")
