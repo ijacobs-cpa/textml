@@ -90,7 +90,7 @@ def main():
             print("\ntextml " + Metadata.version)
         elif userInput == "-h" or userInput == "--help":        
             print("textml " + Metadata.version)
-            print("Usage:\n python3 main.py [input files]")
+            print("Usage:\n python3 main.py [input-file|input-folder]")
             print("     or")
             print(" python3 main.py <commands>\n")
             print("Optional Commands:")
