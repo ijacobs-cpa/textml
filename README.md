@@ -63,7 +63,12 @@ NOTE: Current version is still a WIP
 
 # Changelog
 
-**0.1.1 - Fixed an Issue with relative filenames**
+**0.1.2:**
+
+- Updated help message
+- Improved the defaultDirSetup() to accept custom directories for future features
+
+0.1.1 - Fixed an Issue with relative filenames
 
 0.1.0 - Initial Commit of project 
 

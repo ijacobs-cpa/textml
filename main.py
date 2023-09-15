@@ -5,7 +5,7 @@ import sys
 import os
 
 class Metadata:
-    version = "v0.1.1"
+    version = "v0.1.2"
 
 def writeHTML5Header():
     header = "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Filename</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n"    
