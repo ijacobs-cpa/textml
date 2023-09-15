@@ -1,6 +1,12 @@
 # textml
 Convert textual notes into usable html.
 
+# Features
+
+Program accepts any .txt file or a folder/directory of .txt files and converts them to .html files for use in webpages.
+
+More features to be included
+
 # How to Install 
 
 **In command line:**
@@ -53,11 +59,11 @@ NOTE: Current version is still a WIP
 | -v, --version | Displays version of the program |
 | -h, --help | Displays a help message |
 
-# Features
+# Changelog
 
-Program accepts any .txt file or a folder/directory of .txt files and converts them to .html files for use in webpages.
+**0.1.1 - Fixed an Issue with relative filenames**
 
-More features to be included
+0.1.0 - Initial Commit of project 
 
 # License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
