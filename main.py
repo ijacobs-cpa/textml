@@ -5,10 +5,10 @@ import sys
 import os
 
 class Metadata:
-    version = "v0.1.2"
+    version = "v0.1.3"
 
-def writeHTML5Header():
-    header = "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Filename</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n"    
+def writeHTML5Header(title):
+    header = "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>" + title + "</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n<body>\n"    
 
     return header
 
@@ -23,11 +23,12 @@ def defaultDirSetup(dir):
 
     os.mkdir('textml')      # Recreating directory
 
-def convertHTML(file, outDir, isDir = False):
+def convertHTML(file, outDir):
     fo = open(file, "r")    # Opening file to process for writing 
 
-    if isDir == True:           # Removing input directory from filename if its in a directory
-        pos = file.index('/')
+   
+    pos = file.find('/')           # Removing input directory from filename if its in a directory
+    if pos != -1:
         # print(file[pos + 1:])
         file = file[pos + 1:]
 
@@ -37,16 +38,27 @@ def convertHTML(file, outDir, isDir = False):
 
     fw = open(outDir + newHTMLFile + ".html", 'w')      # Writing new html file to output directory
 
-    fw.write(writeHTML5Header())       # HTML header
-    fw.write("<body>\n")
+    parseTitle = fo.readlines()[0:3]    # Reading first 3 lines for title
 
+    if parseTitle[1] == '\n' and parseTitle[2] == '\n':
+        fw.write(writeHTML5Header(parseTitle[0].rstrip('\n')))       # HTML header as parsed title       
+        fw.write("<h1>" + parseTitle[0].rstrip('\n') + '</h1>\n')   # Writing found title to html
+
+        fo.seek(len(parseTitle[0]) + 2, 0)      # Reseting file position to right before title
+    else:
+        fw.write(writeHTML5Header(newHTMLFile))       # HTML header as filename (for no title)
+        fo.seek(0, 0)
+    
     line = fo.readline()
+    test = 0
     while line:
         # print(len(line.rstrip('\n')))
         if (len(line.rstrip('\n')) > 0):                        # Checking for empty line
             fw.write("  <p>" + line.rstrip('\n') + "</p>\n")    # Writing line of text as HTML
-        else:
+            test = 0
+        elif test == 0:
             fw.write("  <br />\n")        # Replacing empty line with <br>
+            test = 1
             
         line = fo.readline()
     
@@ -65,6 +77,7 @@ def main():
     elif len(sys.argv) != 2:
         raise Exception("ERROR!: More than 1 file/argument passed to program")
 
+
     outDir = "textml/"              # Setting default output directory
     defaultDirSetup("textml")               # Clearing and remaking directory
 
@@ -72,7 +85,7 @@ def main():
 
     if userInput.find(".") != -1:               # Checking if the passed argument is a file
         if ".txt" in userInput:
-            convertHTML(userInput, outDir, True)
+            convertHTML(userInput, outDir)
         else: 
             Exception("Error!: Invalid file type")
     elif (os.path.isdir(userInput)):    # If not a file check if it is a directory                                     
@@ -83,7 +96,7 @@ def main():
 
         for file in inputFiles:
             if ".txt" in file:                                  # Checking if each file's type is supported before converting
-                convertHTML(userInput + file, outDir, True)     
+                convertHTML(userInput + file, outDir)     
             else: 
                 raise Exception("Error!: Invalid file type")    
 
