@@ -78,6 +78,9 @@ def main():
     elif (os.path.isdir(userInput)):    # If not a file check if it is a directory                                     
         inputFiles = os.listdir(userInput)              # Retriving list of all files in directory
 
+        if userInput[len(userInput) - 1] != '/':    # Adding a slash to diretory if not added already
+            userInput += '/'
+
         for file in inputFiles:
             if ".txt" in file:                                  # Checking if each file's type is supported before converting
                 convertHTML(userInput + file, outDir, True)     
