@@ -63,7 +63,14 @@ NOTE: Current version is still a WIP
 
 # Changelog
 
-**0.1.2:**
+**0.1.3:**
+
+- Now accepts folders passed without a "/"
+- Added feature: *Title parsing*
+    - Updates `<title></title>` & creates `<h1></h1>` based on title in txt document (title must be in the first line and have 2 newlines right after)
+- Reduced amount of `<br/>` lines created
+
+0.1.2:
 
 - Updated help message
 - Improved the defaultDirSetup() to accept custom directories for future features
