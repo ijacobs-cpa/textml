@@ -72,9 +72,10 @@ def command_args(usrArg):
         md = Metadata()
         print("\ntextml " + Metadata.version)
     elif usrArg == "-h" or usrArg == "--help":        
-        print("\ntextml " + Metadata.version)
-        print("Usage:\n python main.py <input-file | input-folder> <modifiers> [modifier value]\n     or\n python main.py <commands>\n")
+        print("textml " + Metadata.version)
+        print("\nUsage:\n python main.py <input-file|input-folder> <modifiers> [modifier value]\n     or\n python main.py <commands>\n")
         print("Modifiers:\n------------------\n-o,--output <output_folder> - Sets the output path of html files to the specified folder (Creates folder if doesnt exist)\n")
+        print("     Ex. python main.py myFile.txt --output outDir/\n")
         print("Optional Commands:")
         print("------------------")
         print("-v,--version - Prints the current version of the program")
