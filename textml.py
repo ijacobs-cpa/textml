@@ -128,7 +128,7 @@ def main():
                 convertText(userInput + file, outDir) 
                 done = True    
             else: 
-                raise Exception("Error!: Invalid file type") 
+                print("Error!: Invalid file type for: " + file)
 
     if done != True:            # If not a found file or directory check for supported argument 
         command_args(userInput)
