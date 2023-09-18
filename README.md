@@ -28,11 +28,11 @@ $ cd textml/
 
 run the program 
 
-`$ python main.py <options> `
+`$ python textml.py <options> `
 
 or
 
-`$ python main.py [file/directory] <commands> [command argument]`
+`$ python textml.py [file/directory] <commands> [command argument]`
 
 ## Command Flags
 
@@ -52,31 +52,30 @@ or
 
 Converting a file:
 
-`$ python main.py myfile.txt`
+`$ python textml.py myfile.txt`
 
 Converting all files in a directory:
 
-`$ python main.py mydirectory/`
+`$ python textml.py mydirectory/`
 
 Running Commands:
 
-`$ python main.py -v`
+`$ python textml.py -v`
 
 Specifing Output Directory:
 
-`$ python main.py myFile.txt -o newDir/`
+`$ python textml.py myFile.txt -o newDir/`
 
 # Changelog
 
-0.1.4:
+**0.1.4:**
 - Added Feature: *Custom Output*
     - Allows user to specify an output location for processed HTML files (Refer to How to Install for running instructions)
     - Creates new location if provided location doesnt exist
 - Code Reformatting part 1
+- Renamed main file to textml.py
 
-
-
-**0.1.3:**
+0.1.3:
 
 - Now accepts folders passed without a "/"
 - Added feature: *Title parsing*
