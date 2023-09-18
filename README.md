@@ -46,7 +46,7 @@ or
 | --------- | ----------- |
 | -v, --version | Displays version of the program |
 | -h, --help | Displays a help message |
-| -o, --output <output-location\> | Specifies location to save converted files, creates new folder of location doesn't exist |
+| -o, --output <output-location\> | Specifies the location to save converted files, creates a new folder if location doesn't exist, defaults to textml/ |
 
 ## Examples
 
@@ -74,6 +74,7 @@ Specifing Output Directory:
     - Creates new location if provided location doesnt exist
 - Code Reformatting part 1
 - Renamed main file to textml.py
+- Fixed parent directories not properly being handled when provided
 
 0.1.3:
 
