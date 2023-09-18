@@ -49,15 +49,15 @@ def convertText(file, outDir):
         fo.seek(0, 0)
     
     line = fo.readline()
-    test = 0
+    limiter = 0
     while line:
         # print(len(line.rstrip('\n')))
         if (len(line.rstrip('\n')) > 0):                        # Checking for empty line
             fw.write("  <p>" + line.rstrip('\n') + "</p>\n")    # Writing line of text as HTML
-            test = 0
-        elif test == 0:
-            fw.write("  <br />\n")        # Replacing empty line with <br>
-            test = 1
+            limiter = 0
+        elif limiter == 0:
+            fw.write("  <br />\n")        # Replacing empty line with <br> (limiting to 1 per double newline)
+            limiter = 1
             
         line = fo.readline()
     
@@ -67,33 +67,33 @@ def convertText(file, outDir):
     fo.close()      # Closing filestreams
     fw.close()
 
+# function for handling arguments
 def command_args(usrArg):
     if usrArg == "-v" or usrArg == "--version":   
         md = Metadata()
         print("\ntextml " + Metadata.version)
     elif usrArg == "-h" or usrArg == "--help":        
         print("textml " + Metadata.version)
-        print("\nUsage:\n python main.py <input-file|input-folder> <modifiers> [modifier value]\n     or\n python main.py <commands>\n")
-        print("Modifiers:\n------------------\n-o,--output <output_folder> - Sets the output path of html files to the specified folder (Creates folder if doesnt exist)\n")
-        print("     Ex. python main.py myFile.txt --output outDir/\n")
+        print("\nUsage:\n python main.py [file/directory] <commands> [command-argument]\n     or\n python main.py <commands>\n")   
         print("Optional Commands:")
         print("------------------")
         print("-v,--version - Prints the current version of the program")
         print("-h,--help - Prints a help message for the program")
+        print("-o,--output <output_folder> - Sets the output path of html files to the specified folder (Creates folder if doesnt exist)")
+        print("     Ex. python main.py myFile.txt --output outDir/\n")
+
     else:
         print("\nInvalid arguments provided!\nUse --help or -h flag for more info")
 
 def main():
     if len(sys.argv) == 1:                                              # Invalid or missing arguments handling 
         raise Exception("ERROR!: No agruments passed to the program")
-    # elif len(sys.argv) != 2:
-    #     raise Exception("ERROR!: More than 1 file/argument passed to program")
 
     done = False
     userInput = sys.argv[1]      
     outDir = "textml/"              # Setting default output directory
 
-     # Checking for any additional flags
+    # Checking for any additional flags besides text file/folder
     if len(sys.argv) > 2:
         if len(sys.argv) <= 5:
             if sys.argv[2] == "-o" or sys.argv[2] == "--output":
