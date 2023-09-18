@@ -75,6 +75,7 @@ Specifing Output Directory:
 - Code Reformatting part 1
 - Renamed main file to textml.py
 - Fixed parent directories not properly being handled when provided
+- No longer ends program when file in folder is not supported (keeps looking for txt files)
 
 0.1.3:
 
