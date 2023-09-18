@@ -1,0 +1,24 @@
+Today I learned
+
+
+Documenting some information I've learned today
+
+Here is some information:
+
+
+6502 Assembly Notes (KEY_terms):
+
+#{number} adds a nuber
+${hex} adds a hexadecimal
+
+LDA = Load the accumulator
+
+LDY = Load the Y register
+LDX = Load the X register
+
+STA = Store the accumulator
+STY = Store the Y register
+STX = Store the X register
+
+CPX = compare THE x register
+
