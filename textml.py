@@ -25,11 +25,11 @@ def directory_setup(dir):
 def convertText(file, outDir):
     fo = open(file, "r")    # Opening file to process for writing 
 
-   
-    pos = file.find('/')           # Removing input directory from filename if its in a directory
-    if pos != -1:
-        # print(file[pos + 1:])
+    pos = file.find('/') 
+    while pos != -1:        # Removing input directory from filename if its in a directory                            
         file = file[pos + 1:]
+        pos = file.find('/') 
+
 
     pos = file.index('.')           # Removing old extenstion 
     newHTMLFile = file
