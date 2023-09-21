@@ -85,6 +85,79 @@ def command_args(usrArg):
     else:
         print("\nInvalid arguments provided!\nUse --help or -h flag for more info")
 
+# process MD files
+def write_MD_to_html(new_content, new_title): # this provides the layout of the html with an editable title, content and css style
+
+    html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{new_title}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  {new_content}
+</body>
+</html>"""
+    
+
+    return html_content
+
+def markdownfeat(input_filename, output_filename):
+        with open(input_filename, 'r') as input_file:
+            # Read the content of the input file
+            content = input_file.read()
+
+        # Convert double ** to bold
+        content = content.replace('**', '<strong>', 1)
+        content = content.replace('**', '</strong><br><br>', 1)
+
+        # Convert single * to italics
+        content = content.replace('*', '<em>', 1)
+        content = content.replace('*', '</em><br><br>', 1)
+
+        # Convert links format with HTML links
+        content = markdown_to_html_links(content)
+
+        return content
+
+def markdown_to_html_links(content):
+    # Find and replace links and format with HTML links
+    while '[' in content and ']' in content:
+        start_index = content.find('[')
+        end_index = content.find(']')
+
+        if start_index < end_index:
+            link_text = content[start_index + 1:end_index]
+            link_url = content[end_index + 1:]
+
+            link_url = link_url.strip('[]')
+
+            link_html = f'<a href="{link_url}">{link_text}</a> <br><br>'
+
+            content = content[:start_index] + link_html + content[end_index + len(link_url) + 2:]
+        else:
+            content = content.replace(']', '', 1)
+
+    return content
+
+
+
+def convertMD(userInput):
+        
+        new_title=userInput
+        html_newfile_path = userInput.replace('.md', '.html') # changes the md file to html
+
+        body = markdownfeat(new_title, html_newfile_path)
+
+        content = write_MD_to_html(body , new_title)
+        
+        with open(html_newfile_path, 'w') as output_file: # write the contents of the converted file to the new html file
+            output_file.write(content) 
+
+
+
+        
 def main():
     if len(sys.argv) == 1:                                              # Invalid or missing arguments handling 
         raise Exception("ERROR!: No agruments passed to the program")
@@ -114,6 +187,16 @@ def main():
             done = True
         else: 
             Exception("Error!: Invalid file type")
+
+    
+    #MD Support Markdown added Feature
+    if done != True or userInput.find(".") != -1:               # Checking if the file is md
+        if ".md" in userInput:
+            convertMD(userInput)
+            done = True
+        else: 
+            Exception("Error!: Invalid file type")
+
 
 
     if done != True and os.path.isdir(userInput) == True:    # If not a file check if it is a directory  
