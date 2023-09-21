@@ -103,7 +103,7 @@ def write_MD_to_html(new_content, new_title): # this provides the layout of the 
 
     return html_content
 
-def markdownfeat(input_filename, output_filename):
+def markdownfeat(input_filename):
         with open(input_filename, 'r') as input_file:
             # Read the content of the input file
             content = input_file.read()
@@ -124,20 +124,20 @@ def markdownfeat(input_filename, output_filename):
 def markdown_to_html_links(content):
     # Find and replace links and format with HTML links
     while '[' in content and ']' in content:
-        start_index = content.find('[')
-        end_index = content.find(']')
+        start_index = content.find('[') # finds the first intance of the symol and assignt it in the start index
+        end_index = content.find(']') # finds the first intance of the symol and assignt it in the end index
 
         if start_index < end_index:
-            link_text = content[start_index + 1:end_index]
-            link_url = content[end_index + 1:]
+            link_text = content[start_index + 1:end_index] #extract the text substring and place it as the text link
+            link_url = content[end_index + 1:]#extract the text substring and place it as the link url
 
-            link_url = link_url.strip('[]')
+            link_url = link_url.strip('[]') #removes the text between []
 
-            link_html = f'<a href="{link_url}">{link_text}</a> <br><br>'
+            link_html = f'<a href="{link_url}">{link_text}</a> <br><br>' # creates the syntax
 
-            content = content[:start_index] + link_html + content[end_index + len(link_url) + 2:]
+            content = content[:start_index] + link_html + content[end_index + len(link_url) + 2:] # assign the syntaxt to the content
         else:
-            content = content.replace(']', '', 1)
+            content = content.replace(']', '', 1) #replace the end syntax with a space
 
     return content
 
@@ -148,7 +148,7 @@ def convertMD(userInput):
         new_title=userInput
         html_newfile_path = userInput.replace('.md', '.html') # changes the md file to html
 
-        body = markdownfeat(new_title, html_newfile_path)
+        body = markdownfeat(new_title, html_newfile_path) # assign the newly created markdown feat to body to be assigned to the proper HTML format
 
         content = write_MD_to_html(body , new_title)
         
