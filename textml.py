@@ -104,22 +104,53 @@ def write_MD_to_html(new_content, new_title): # this provides the layout of the 
     return html_content
 
 def markdownfeat(input_filename):
-        with open(input_filename, 'r') as input_file:
-            # Read the content of the input file
-            content = input_file.read()
+    with open(input_filename, 'r') as input_file:
+        # Read the content of the input file
+        lines = input_file.readlines()
 
-        # Convert double ** to bold
-        content = content.replace('**', '<strong>', 1)
-        content = content.replace('**', '</strong><br><br>', 1)
+    # Initialize an empty list to store modified lines
+    modified_lines = []
 
-        # Convert single * to italics
-        content = content.replace('*', '<em>', 1)
-        content = content.replace('*', '</em><br><br>', 1)
+    for line in lines:
+        # Remove leading and trailing whitespace from each line
+        line = line.strip()
 
-        # Convert links format with HTML links
-        content = markdown_to_html_links(content)
+        if line.startswith('#'):
+            if line.startswith('##'):
+                modified_lines.append(f'<h2>{line[2:].strip()}</h2>')
+            else:
+                modified_lines.append(f'<h1>{line[1:].strip()}</h1>')
 
-        return content
+        # Check if the line starts with '['
+        elif line.startswith('[') or line.startswith('*') or line.startswith('**') or line.startswith('#') or line.startswith('##'):
+            modified_lines.append(line)  # Append the line as is (if it does not meet the conditions)
+        else:
+            # Check if the line is empty
+            if not line:
+                modified_lines.append('<br>')  # Insert a single <br> tag for empty lines
+            else:
+                # Wrap the line with <p> tags and append it to the modified_lines list
+                modified_lines.append(f'<p>{line}</p>')
+        
+
+    # Join the modified lines with line breaks
+    content = '\n'.join(modified_lines)
+
+    # Convert double ** to bold
+    content = content.replace('**', '<strong>', 1)
+    content = content.replace('**', '</strong>', 1)
+
+    # Convert single * to italics
+    content = content.replace('*', '<em>', 1)
+    content = content.replace('*', '</em>', 1)
+
+    # Convert links format with HTML links (you need to define the markdown_to_html_links function)
+    content = markdown_to_html_links(content)
+
+    return content
+
+
+
 
 def markdown_to_html_links(content):
     # Find and replace links and format with HTML links
@@ -133,7 +164,7 @@ def markdown_to_html_links(content):
 
             link_url = link_url.strip('[]') #removes the text between []
 
-            link_html = f'<a href="{link_url}">{link_text}</a> <br><br>' # creates the syntax
+            link_html = f'<a href="{link_url}">{link_text}</a>' # creates the syntax
 
             content = content[:start_index] + link_html + content[end_index + len(link_url) + 2:] # assign the syntaxt to the content
         else:
@@ -143,19 +174,27 @@ def markdown_to_html_links(content):
 
 
 
-def convertMD(userInput):
-        
-        new_title=userInput
-        html_newfile_path = userInput.replace('.md', '.html') # changes the md file to html
+import os
 
-        body = markdownfeat(new_title, html_newfile_path) # assign the newly created markdown feat to body to be assigned to the proper HTML format
+def convertMD(userInput, outDir):
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(outDir):
+        os.makedirs(outDir)
 
-        content = write_MD_to_html(body , new_title)
-        
-        with open(html_newfile_path, 'w') as output_file: # write the contents of the converted file to the new html file
-            output_file.write(content) 
+    # Define the input Markdown file path
+    input_md_file = userInput
 
+    # Define the output HTML file path by replacing the extension
+    output_html_file = os.path.join(outDir, os.path.splitext(os.path.basename(userInput))[0] + '.html')
 
+    # Call your Markdown to HTML conversion function
+    body = markdownfeat(input_md_file)
+
+    # Convert the Markdown body to HTML and write it to the output HTML file
+    content = write_MD_to_html(body, input_md_file)
+
+    with open(output_html_file, 'w') as output_file:
+        output_file.write(content)
 
         
 def main():
@@ -185,14 +224,8 @@ def main():
         if ".txt" in userInput:
             convertText(userInput, outDir)
             done = True
-        else: 
-            Exception("Error!: Invalid file type")
-
-    
-    #MD Support Markdown added Feature
-    if done != True or userInput.find(".") != -1:               # Checking if the file is md
-        if ".md" in userInput:
-            convertMD(userInput)
+        elif ".md" in userInput:                                #if the file is md and output in the right directory
+            convertMD(userInput, outDir)
             done = True
         else: 
             Exception("Error!: Invalid file type")
@@ -209,6 +242,8 @@ def main():
         for file in inputFiles:
             if ".txt" in file:                                  # Checking if each file's type is supported before converting
                 convertText(userInput + file, outDir) 
+            elif ".md" in file:                                  # Checking if each file's type is supported before converting
+                convertMD(userInput + file, outDir) 
                 done = True    
             else: 
                 print("Error!: Invalid file type for: " + file)
