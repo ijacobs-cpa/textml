@@ -4,7 +4,7 @@ import sys
 import os
 
 class Metadata:
-    version = "v0.1.4"
+    version = "v0.1.5"
 
 def writeHTMLHeader(title):
     header = "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>" + title + "</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n<body>\n"    
@@ -108,6 +108,7 @@ def markdownfeat(input_filename):
         # Read the content of the input file
         lines = input_file.readlines()
 
+
     # Initialize an empty list to store modified lines
     modified_lines = []
 
@@ -147,10 +148,8 @@ def markdownfeat(input_filename):
     # Convert links format with HTML links (you need to define the markdown_to_html_links function)
     content = markdown_to_html_links(content)
 
+    
     return content
-
-
-
 
 def markdown_to_html_links(content):
     # Find and replace links and format with HTML links
@@ -172,9 +171,20 @@ def markdown_to_html_links(content):
 
     return content
 
+def extract_thet_title(input_md_file):
 
+    with open(input_md_file, "r") as fo:
+        lines = fo.readlines()
 
-import os
+           
+    title = ""     # This will find the first non empty line in the document
+    for line in lines[:3]:
+        line = line.strip()  # Remove all of the leading/trailing whitespace
+        if line:
+            title = line
+            break
+
+    return title
 
 def convertMD(userInput, outDir):
     # Create the output directory if it doesn't exist
@@ -184,6 +194,9 @@ def convertMD(userInput, outDir):
     # Define the input Markdown file path
     input_md_file = userInput
 
+    
+    fil__name_noEx = extract_thet_title(input_md_file) # extract the title from the document
+
     # Define the output HTML file path by replacing the extension
     output_html_file = os.path.join(outDir, os.path.splitext(os.path.basename(userInput))[0] + '.html')
 
@@ -191,7 +204,7 @@ def convertMD(userInput, outDir):
     body = markdownfeat(input_md_file)
 
     # Convert the Markdown body to HTML and write it to the output HTML file
-    content = write_MD_to_html(body, input_md_file)
+    content = write_MD_to_html(body, fil__name_noEx)
 
     with open(output_html_file, 'w') as output_file:
         output_file.write(content)
