@@ -100,17 +100,24 @@ def write_MD_to_html(new_content, new_title): # this provides the layout of the 
 </body>
 </html>"""
     
-
     return html_content
 
 def markdownfeat(input_filename):
     with open(input_filename, 'r') as input_file:
+
+        parseTitle = input_file.readlines()[0:3]    # Reading first 3 lines for title
+        # Initialize an empty list to store modified lines
+        modified_lines = []
+
+        if parseTitle[1] == '\n' and parseTitle[2] == '\n':    
+            modified_lines.append("<h1>" + parseTitle[0].rstrip('\n') + '</h1>\n')   # Writing found title to html
+            input_file.seek(len(parseTitle[0]) + 2, 0)      # Reseting file position to right before title
+        else:
+            input_file.seek(0, 0)
+
+        
         # Read the content of the input file
         lines = input_file.readlines()
-
-
-    # Initialize an empty list to store modified lines
-    modified_lines = []
 
     for line in lines:
         # Remove leading and trailing whitespace from each line
@@ -128,7 +135,7 @@ def markdownfeat(input_filename):
         else:
             # Check if the line is empty
             if not line:
-                modified_lines.append('<br>')  # Insert a single <br> tag for empty lines
+                modified_lines.append('<br/>')  # Insert a single <br> tag for empty lines
             else:
                 # Wrap the line with <p> tags and append it to the modified_lines list
                 modified_lines.append(f'<p>{line}</p>')
@@ -171,7 +178,7 @@ def markdown_to_html_links(content):
 
     return content
 
-def extract_thet_title(input_md_file):
+def extractTitle(input_md_file):
 
     with open(input_md_file, "r") as fo:
         lines = fo.readlines()
@@ -195,7 +202,7 @@ def convertMD(userInput, outDir):
     input_md_file = userInput
 
     
-    fil__name_noEx = extract_thet_title(input_md_file) # extract the title from the document
+    fil__name_noEx = extractTitle(input_md_file) # extract the title from the document
 
     # Define the output HTML file path by replacing the extension
     output_html_file = os.path.join(outDir, os.path.splitext(os.path.basename(userInput))[0] + '.html')
