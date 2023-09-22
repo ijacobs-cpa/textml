@@ -66,7 +66,31 @@ Specifing Output Directory:
 
 `$ python textml.py myFile.txt -o newDir/`
 
+Processing Markdown Files in "examples" Directory:
+```python textml.py examples``` 
+
+
+Processing Markdown Files Outside the Directory: 
+
+
+```python textml.py mdtest.md```
+
+
+Specifying a Custom Output Directory: 
+
+```python textml.py mdtest.md -o testmd```
+
+
 # Changelog
+
+**0.1.5:**
+
+1. **Markdown Syntax Support**: Markdown syntax features, such as italics, bold, headings (Heading 1 and Heading 2), and links. This means it can correctly format these elements when converting Markdown to HTML. If you specify a single Markdown file it processes that file and saves the HTML output in the "testml" directory. Also If you run the script with a directory path it processes Markdown files within that directory and saves the generated HTML files in the "testml" directory.
+
+2. **Output Directory**: custom output directory and the script will save the HTML output in the specified directory.
+
+
+
 
 **0.1.4:**
 - Added Feature: *Custom Output*
