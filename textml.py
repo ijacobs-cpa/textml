@@ -2,6 +2,8 @@
 
 import sys
 import os
+import argparse
+import shutil
 
 class Metadata:
     version = "v0.1.5"
@@ -218,26 +220,41 @@ def convertMD(userInput, outDir):
 
         
 def main():
-    if len(sys.argv) == 1:                                              # Invalid or missing arguments handling 
-        raise Exception("ERROR!: No agruments passed to the program")
+    # if len(sys.argv) == 1:                                              # Invalid or missing arguments handling 
+    #     raise Exception("ERROR!: No agruments passed to the program")
 
     done = False
-    userInput = sys.argv[1]      
-    outDir = "textml/"              # Setting default output directory
+    # userInput = sys.argv[1]      
+    outDir = "til/"              # Setting default output directory
 
-    # Checking for any additional flags besides text file/folder
-    if len(sys.argv) > 2:
-        if len(sys.argv) <= 5:
-            if sys.argv[2] == "-o" or sys.argv[2] == "--output":
-                if len(sys.argv[3]) > 0:
-                    outDir = sys.argv[3]
-                else:
-                    raise Exception("ERROR!: No output directory specified!\n Use -h,--help for more info.")
+    # # Checking for any additional flags besides text file/folder
+    # if len(sys.argv) > 2:
+    #     if len(sys.argv) <= 5:
+    #         if sys.argv[2] == "-o" or sys.argv[2] == "--output":
+    #             if len(sys.argv[3]) > 0:
+    #                 outDir = sys.argv[3]
+    #             else:
+    #                 raise Exception("ERROR!: No output directory specified!\n Use -h,--help for more info.")
 
-        else:
-            raise Exception("ERROR!: Too many arguments passed to program")
+    #     else:
+    #         raise Exception("ERROR!: Too many arguments passed to program")
         
-    if (os.path.isdir(outDir) == False) or (outDir == "textml/"):
+
+    parser = argparse.ArgumentParser(description="Program accepts any .txt/.md file or a folder/directory of .txt/.md files and converts them to HTML files for use in webpages.")
+
+    parser.add_argument('-v', '--version', action='version', version="textml" + Metadata.version)
+    parser.add_argument('input', metavar='input', type=str, help="Provide the .txt/.md file or a folder/directory of .txt/.md files to be converted")
+    parser.add_argument('-o','--output', metavar='output', type=str, help="Optionally specifies a directory to save converted HTML files")
+
+    args = parser.parse_args()
+    print(args.output)
+
+    if args.output:
+        outDir = args.output
+
+    userInput = args.input
+
+    if (os.path.isdir(outDir) == False) or (outDir == "til/"):
         directory_setup(outDir)               # Clearing and remaking directory
 
     if done != True or userInput.find(".") != -1:               # Checking if the passed argument is a file
@@ -268,8 +285,8 @@ def main():
             else: 
                 print("Error!: Invalid file type for: " + file)
 
-    if done != True:            # If not a found file or directory check for supported argument 
-        command_args(userInput)
+    # if done != True:            # If not a found file or directory check for supported argument 
+    #     command_args(userInput)
 
 if (__name__ == "__main__"):
     main()
