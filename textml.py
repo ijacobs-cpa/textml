@@ -24,18 +24,10 @@ def convertText(filePath, outDir):
     fw = open(writePath, 'w')      # Writing new html file to output directory
 
     HTMLContent = ""
-    title = ""
+    title = parseTitle(fo, newHTMLFile)
 
-    parseTitle = fo.readlines()[0:3]    # Reading first 3 lines for title
-
-    if parseTitle[1] == '\n' and parseTitle[2] == '\n':
-        title = parseTitle[0].rstrip('\n')   # Getting title   
-        HTMLContent += ("<h1>" + parseTitle[0].rstrip('\n') + '</h1>\n')   # Writing found title to html
-
-        fo.seek(len(parseTitle[0]) + 2, 0)      # Reseting file position to right before title
-    else:
-        title = newHTMLFile      # HTML header as filename (for no title)
-        fo.seek(0, 0)
+    if title != os.path.splitext(newHTMLFile)[0]:
+        HTMLContent += (" <h1>" + title + "</h1>\n")
 
     line = fo.readline()
     limiter = 0
@@ -55,6 +47,18 @@ def convertText(filePath, outDir):
     fo.close()      # Closing filestreams
     fw.close()
 
+def parseTitle(openFile, fileName):
+    title = ""
+    parseTitle = openFile.readlines()[0:3]    # Reading first 3 lines for title
+
+    if parseTitle[1] == '\n' and parseTitle[2] == '\n':
+        title = parseTitle[0].rstrip('\n')   # Getting title
+        openFile.seek(len(parseTitle[0]) + 2, 0)      # Reseting file position to right before title
+    else:
+        title = os.path.splitext(fileName)[0]   # Getting file name without extension for title
+        openFile.seek(0, 0)
+
+    return title
 
 # process MD files
 def write_html_content(new_content, new_title): # this provides the layout of the html with an editable title, content
@@ -73,22 +77,19 @@ def write_html_content(new_content, new_title): # this provides the layout of th
     
     return html_content
 
-def markdownfeat(input_filename):
-    with open(input_filename, 'r') as input_file:
+def markdownfeat(filestream, input_filename):
+    
+    # Initialize an empty list to store modified lines
+    modified_lines = []
 
-        parseTitle = input_file.readlines()[0:3]    # Reading first 3 lines for title
-        # Initialize an empty list to store modified lines
-        modified_lines = []
+    fileName = os.path.basename(input_filename)
+    title = parseTitle(filestream, fileName)  
 
-        if parseTitle[1] == '\n' and parseTitle[2] == '\n':    
-            modified_lines.append("<h1>" + parseTitle[0].rstrip('\n') + '</h1>\n')   # Writing found title to html
-            input_file.seek(len(parseTitle[0]) + 2, 0)      # Reseting file position to right before title
-        else:
-            input_file.seek(0, 0)
+    if title != os.path.splitext(fileName):
+        modified_lines.append("<h1>" + title + '</h1>\n')   # Writing found title to html
 
-        
-        # Read the content of the input file
-        lines = input_file.readlines()
+    # Read the content of the input file
+    lines = filestream.readlines()
 
     for line in lines:
         # Remove leading and trailing whitespace from each line
@@ -100,8 +101,8 @@ def markdownfeat(input_filename):
             else:
                 modified_lines.append(f'<h1>{line[1:].strip()}</h1>')
 
-        # Check if the line starts with '['
-        elif line.startswith('[') or line.startswith('*') or line.startswith('**') or line.startswith('#') or line.startswith('##'):
+        # Check if the line starts with markdown prefix
+        elif line.startswith('[') or line.startswith('*') or line.startswith('**') or line.startswith('#') or line.startswith('##') or line.startswith("<h1>"):
             modified_lines.append(line)  # Append the line as is (if it does not meet the conditions)
         else:
             # Check if the line is empty
@@ -149,21 +150,6 @@ def markdown_to_html_links(content):
 
     return content
 
-def extractTitle(input_md_file):
-
-    with open(input_md_file, "r") as fo:
-        lines = fo.readlines()
-
-           
-    title = ""     # This will find the first non empty line in the document
-    for line in lines[:3]:
-        line = line.strip()  # Remove all of the leading/trailing whitespace
-        if line:
-            title = line
-            break
-
-    return title
-
 def convertMD(userInput, outDir):
     # Create the output directory if it doesn't exist
     if not os.path.exists(outDir):
@@ -172,37 +158,32 @@ def convertMD(userInput, outDir):
     # Define the input Markdown file path
     input_md_file = userInput
 
-    
-    fil__name_noEx = extractTitle(input_md_file) # extract the title from the document
-
     # Define the output HTML file path by replacing the extension
     output_html_file = os.path.join(outDir, os.path.splitext(os.path.basename(userInput))[0] + '.html')
     # print(output_html_file)
 
-    # Call your Markdown to HTML conversion function
-    body = markdownfeat(input_md_file)
+    with open(input_md_file, 'r') as input_file:
+        # Parse title name from html file
+        title = parseTitle(input_file, input_md_file)
+        # Call your Markdown to HTML conversion function
+        body = markdownfeat(input_file, input_md_file)
+        # Convert the Markdown body to HTML and write it to the output HTML file
 
-    # Convert the Markdown body to HTML and write it to the output HTML file
-    content = write_html_content(body, fil__name_noEx)
+    content = write_html_content(body, title)
 
     with open(output_html_file, 'w') as output_file:
         output_file.write(content)
-
-
-        
+       
 def main():
-    done = False    
     outDir = "til/"              # Setting default output directory  
 
     parser = argparse.ArgumentParser(description="Program accepts any .txt/.md file or a folder/directory of .txt/.md files and converts them to HTML files for use in webpages.")
 
-    parser.add_argument('-v', '--version', action='version', version="textml" + Metadata.version)
-    parser.add_argument('input', metavar='input', type=str, help="Provide the .txt/.md file or a folder/directory of .txt/.md files to be converted")
-    parser.add_argument('-o','--output', metavar='output', type=str, help="Optionally specifies a directory to save converted HTML files")
+    parser.add_argument('-v', '--version', action='version', version="textml " + Metadata.version)
+    parser.add_argument('input', metavar='input', type=str, help="The provided .txt/.md file or a folder/directory of .txt/.md files to be converted")
+    parser.add_argument('-o','--output', metavar='output', type=str, help="Optionally specifies a directory to save converted HTML files (Creates folder if one does not exist")
 
     args = parser.parse_args()
-    # print(args.output)
-    # print(args.input)
 
     if args.output:
         outDir = args.output
@@ -215,14 +196,12 @@ def main():
     if userInput.find(".") != -1:               # Checking if the passed argument is a file
         if ".txt" in userInput:
             convertText(userInput, outDir)
-            done = True
         elif ".md" in userInput:                                #if the file is md and output in the right directory
             convertMD(userInput, outDir)
-            done = True
         else: 
             raise Exception("Error!: Invalid file type")
 
-    if done != True and os.path.isdir(userInput) == True:    # If not a file check if it is a directory  
+    elif os.path.isdir(userInput) == True:    # If not a file check if it is a directory  
 
         inputFiles = os.listdir(userInput)              # Retriving list of all files in directory  
 
@@ -235,6 +214,8 @@ def main():
                 convertMD(currFile, outDir) 
             else: 
                 print("Error!: Invalid file type for: " + file)
+    else:
+        print("Directory: " + userInput + " does not exist!")
 
 if (__name__ == "__main__"):
     main()
