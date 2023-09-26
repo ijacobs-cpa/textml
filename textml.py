@@ -8,82 +8,56 @@ import shutil
 class Metadata:
     version = "v0.1.5"
 
-def writeHTMLHeader(title):
-    header = "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>" + title + "</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n<body>\n"    
-
-    return header
-
 def directory_setup(dir):
     if os.path.isdir(dir):         # Check if output dir exists
         shutil.rmtree(dir)  # Removing directory and its contents
-        
+
     os.mkdir(dir)      # Creating directory
 
-def convertText(file, outDir):
-    fo = open(file, "r")    # Opening file to process for writing 
+def convertText(filePath, outDir):
+    fo = open(filePath, "r")    # Opening file to process for writing 
 
-    pos = file.find('/') 
-    while pos != -1:        # Removing input directory from filename if its in a directory                            
-        file = file[pos + 1:]
-        pos = file.find('/') 
+    file = os.path.basename(filePath)                   # Getting basename of file
+    newHTMLFile = os.path.splitext(file)[0] + ".html"   # Renaming new file to .html
+    writePath = os.path.join(outDir, newHTMLFile)       # Getting new output directory
 
+    fw = open(writePath, 'w')      # Writing new html file to output directory
 
-    pos = file.index('.')           # Removing old extenstion 
-    newHTMLFile = file
-    newHTMLFile = newHTMLFile[0:pos]
-
-    fw = open(outDir + newHTMLFile + ".html", 'w')      # Writing new html file to output directory
+    HTMLContent = ""
+    title = ""
 
     parseTitle = fo.readlines()[0:3]    # Reading first 3 lines for title
 
     if parseTitle[1] == '\n' and parseTitle[2] == '\n':
-        fw.write(writeHTMLHeader(parseTitle[0].rstrip('\n')))       # HTML header as parsed title       
-        fw.write("<h1>" + parseTitle[0].rstrip('\n') + '</h1>\n')   # Writing found title to html
+        title = parseTitle[0].rstrip('\n')   # Getting title   
+        HTMLContent += ("<h1>" + parseTitle[0].rstrip('\n') + '</h1>\n')   # Writing found title to html
 
         fo.seek(len(parseTitle[0]) + 2, 0)      # Reseting file position to right before title
     else:
-        fw.write(writeHTMLHeader(newHTMLFile))       # HTML header as filename (for no title)
+        title = newHTMLFile      # HTML header as filename (for no title)
         fo.seek(0, 0)
-    
+
     line = fo.readline()
     limiter = 0
     while line:
-        # print(len(line.rstrip('\n')))
         if (len(line.rstrip('\n')) > 0):                        # Checking for empty line
-            fw.write("  <p>" + line.rstrip('\n') + "</p>\n")    # Writing line of text as HTML
+            HTMLContent += ("  <p>" + line.rstrip('\n') + "</p>\n")    # Writing line of text as HTML
             limiter = 0
         elif limiter == 0:
-            fw.write("  <br />\n")        # Replacing empty line with <br> (limiting to 1 per double newline)
+            HTMLContent += ("  <br />\n")        # Replacing empty line with <br> (limiting to 1 per double newline)
             limiter = 1
             
-        line = fo.readline()
+        line = fo.readline()    # Reading next line
     
-    fw.write("</body>\n")
-    fw.write("</html>\n")
+    finishedFile = write_html_content(HTMLContent, title)
+    fw.write(finishedFile)
 
     fo.close()      # Closing filestreams
     fw.close()
 
-# function for handling arguments
-def command_args(usrArg):
-    if usrArg == "-v" or usrArg == "--version":   
-        md = Metadata()
-        print("\ntextml " + Metadata.version)
-    elif usrArg == "-h" or usrArg == "--help":        
-        print("textml " + Metadata.version)
-        print("\nUsage:\n python main.py [file/directory] <commands> [command-argument]\n     or\n python main.py <commands>\n")   
-        print("Optional Commands:")
-        print("------------------")
-        print("-v,--version - Prints the current version of the program")
-        print("-h,--help - Prints a help message for the program")
-        print("-o,--output <output_folder> - Sets the output path of html files to the specified folder (Creates folder if doesnt exist)")
-        print("     Ex. python main.py myFile.txt --output outDir/\n")
-
-    else:
-        print("\nInvalid arguments provided!\nUse --help or -h flag for more info")
 
 # process MD files
-def write_MD_to_html(new_content, new_title): # this provides the layout of the html with an editable title, content and css style
+def write_html_content(new_content, new_title): # this provides the layout of the html with an editable title, content
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -203,15 +177,17 @@ def convertMD(userInput, outDir):
 
     # Define the output HTML file path by replacing the extension
     output_html_file = os.path.join(outDir, os.path.splitext(os.path.basename(userInput))[0] + '.html')
+    # print(output_html_file)
 
     # Call your Markdown to HTML conversion function
     body = markdownfeat(input_md_file)
 
     # Convert the Markdown body to HTML and write it to the output HTML file
-    content = write_MD_to_html(body, fil__name_noEx)
+    content = write_html_content(body, fil__name_noEx)
 
     with open(output_html_file, 'w') as output_file:
         output_file.write(content)
+
 
         
 def main():
@@ -226,7 +202,7 @@ def main():
 
     args = parser.parse_args()
     # print(args.output)
-    print(args.input)
+    # print(args.input)
 
     if args.output:
         outDir = args.output
@@ -246,24 +222,19 @@ def main():
         else: 
             raise Exception("Error!: Invalid file type")
 
-
     if done != True and os.path.isdir(userInput) == True:    # If not a file check if it is a directory  
 
-        inputFiles = os.listdir(userInput)              # Retriving list of all files in directory
-
-        if userInput[len(userInput) - 1] != '/':    # Adding a slash to diretory if not added already
-            userInput += '/'
+        inputFiles = os.listdir(userInput)              # Retriving list of all files in directory  
 
         for file in inputFiles:
+            currFile = os.path.join(userInput, file)
+
             if ".txt" in file:                                  # Checking if each file's type is supported before converting
-                convertText(userInput + file, outDir) 
+                convertText(currFile, outDir) 
             elif ".md" in file:                                  # Checking if each file's type is supported before converting
-                convertMD(userInput + file, outDir) 
+                convertMD(currFile, outDir) 
             else: 
                 print("Error!: Invalid file type for: " + file)
-
-    # if done != True:            # If not a found file or directory check for supported argument 
-    #     command_args(userInput)
 
 if (__name__ == "__main__"):
     main()
