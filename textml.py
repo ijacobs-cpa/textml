@@ -15,13 +15,8 @@ def writeHTMLHeader(title):
 
 def directory_setup(dir):
     if os.path.isdir(dir):         # Check if output dir exists
-        oldFiles = os.listdir(dir) # Removing each file in dir before deleting
-        if len(oldFiles) > 0:
-            for file in oldFiles:
-                os.remove(dir + "/" + file)
-
-        os.rmdir(dir)      # Removing directory
-
+        shutil.rmtree(dir)  # Removing directory and its contents
+        
     os.mkdir(dir)      # Creating directory
 
 def convertText(file, outDir):
@@ -220,25 +215,8 @@ def convertMD(userInput, outDir):
 
         
 def main():
-    # if len(sys.argv) == 1:                                              # Invalid or missing arguments handling 
-    #     raise Exception("ERROR!: No agruments passed to the program")
-
-    done = False
-    # userInput = sys.argv[1]      
-    outDir = "til/"              # Setting default output directory
-
-    # # Checking for any additional flags besides text file/folder
-    # if len(sys.argv) > 2:
-    #     if len(sys.argv) <= 5:
-    #         if sys.argv[2] == "-o" or sys.argv[2] == "--output":
-    #             if len(sys.argv[3]) > 0:
-    #                 outDir = sys.argv[3]
-    #             else:
-    #                 raise Exception("ERROR!: No output directory specified!\n Use -h,--help for more info.")
-
-    #     else:
-    #         raise Exception("ERROR!: Too many arguments passed to program")
-        
+    done = False    
+    outDir = "til/"              # Setting default output directory  
 
     parser = argparse.ArgumentParser(description="Program accepts any .txt/.md file or a folder/directory of .txt/.md files and converts them to HTML files for use in webpages.")
 
@@ -247,7 +225,8 @@ def main():
     parser.add_argument('-o','--output', metavar='output', type=str, help="Optionally specifies a directory to save converted HTML files")
 
     args = parser.parse_args()
-    print(args.output)
+    # print(args.output)
+    print(args.input)
 
     if args.output:
         outDir = args.output
@@ -257,7 +236,7 @@ def main():
     if (os.path.isdir(outDir) == False) or (outDir == "til/"):
         directory_setup(outDir)               # Clearing and remaking directory
 
-    if done != True or userInput.find(".") != -1:               # Checking if the passed argument is a file
+    if userInput.find(".") != -1:               # Checking if the passed argument is a file
         if ".txt" in userInput:
             convertText(userInput, outDir)
             done = True
@@ -265,8 +244,7 @@ def main():
             convertMD(userInput, outDir)
             done = True
         else: 
-            Exception("Error!: Invalid file type")
-
+            raise Exception("Error!: Invalid file type")
 
 
     if done != True and os.path.isdir(userInput) == True:    # If not a file check if it is a directory  
@@ -281,7 +259,6 @@ def main():
                 convertText(userInput + file, outDir) 
             elif ".md" in file:                                  # Checking if each file's type is supported before converting
                 convertMD(userInput + file, outDir) 
-                done = True    
             else: 
                 print("Error!: Invalid file type for: " + file)
 
