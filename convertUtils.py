@@ -10,9 +10,9 @@ def convertText(filePath, outDir):
     fw = open(writePath, 'w')      # Writing new html file to output directory
 
     HTMLContent = ""
-    title = parseTitle(fo, newHTMLFile)
+    title = parseTitle(fo, newHTMLFile)         # Getting the title from the file if it exists
 
-    if title != os.path.splitext(newHTMLFile)[0]:
+    if title != os.path.splitext(newHTMLFile)[0]:       # Writing the title if it is not the filename
         HTMLContent += (" <h1>" + title + "</h1>\n")
 
     line = fo.readline()
@@ -68,10 +68,10 @@ def markdownfeat(filestream, input_filename):
     # Initialize an empty list to store modified lines
     modified_lines = []
 
-    fileName = os.path.basename(input_filename)
+    fileName = os.path.basename(input_filename)     # Getting the base file
     title = parseTitle(filestream, fileName)  
 
-    if title != os.path.splitext(fileName):
+    if title != os.path.splitext(fileName):     # Writing the title element if it is not a file name
         modified_lines.append("<h1>" + title + '</h1>\n')   # Writing found title to html
 
     # Read the content of the input file
@@ -87,7 +87,7 @@ def markdownfeat(filestream, input_filename):
             else:
                 modified_lines.append(f'<h1>{line[1:].strip()}</h1>')
 
-        # Check if the line starts with markdown prefix
+        # Check if the line starts with markdown prefixes
         elif line.startswith('[') or line.startswith('*') or line.startswith('**') or line.startswith('#') or line.startswith('##') or line.startswith("<h1>"):
             modified_lines.append(line)  # Append the line as is (if it does not meet the conditions)
         else:
@@ -112,8 +112,7 @@ def markdownfeat(filestream, input_filename):
 
     # Convert links format with HTML links (you need to define the markdown_to_html_links function)
     content = markdown_to_html_links(content)
-
-    
+  
     return content
 
 def markdown_to_html_links(content):

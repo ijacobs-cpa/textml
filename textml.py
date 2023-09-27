@@ -4,10 +4,10 @@ import os
 import argparse
 import shutil
 
-import convert_utils as utils
+import convertUtils as utils
 
 class Metadata:
-    version = "v0.1.5"
+    version = "v0.1.6"
 
 def directory_setup(dir):
     if os.path.isdir(dir):         # Check if output dir exists
@@ -18,6 +18,7 @@ def directory_setup(dir):
 def main():
     outDir = "til/"              # Setting default output directory  
 
+    # Argument parsing below 
     parser = argparse.ArgumentParser(description="Program accepts any .txt/.md file or a folder/directory of .txt/.md files and converts them to HTML files for use in webpages.")
 
     parser.add_argument('-v', '--version', action='version', version="textml " + Metadata.version)
