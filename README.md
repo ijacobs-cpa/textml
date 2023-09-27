@@ -140,8 +140,14 @@ CPX = compare THE x register
 
 # Changelog
 
-**0.1.5:** (merged pull request from [rabroldan](https://github.com/rabroldan))
+**0.1.6:** (Based on Feedback)
+- Updated argument handling to use argparse
+- Simplified directory deletion using shutil
+- Normalized working with paths by utilizing os.path functions (instead of strings)
+- Refactored title parsing code
+- Modularized program's convert functions into its own file [*convertUtils.py*](https://github.com/ijacobs-cpa/textml/blob/main/convertUtils.py)
 
+0.1.5: (merged pull request from [rabroldan](https://github.com/rabroldan))
 - Added **Markdown file support**
     -  Markdown syntax features, such as italics, bold, headings (Heading 1 and Heading 2), and links. 
 
