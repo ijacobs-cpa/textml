@@ -31,7 +31,8 @@ def main():
 
     if args.output:
         outDir = args.output
-    elif args.lang:
+
+    if args.lang:
         lang = args.lang
         
     userInput = args.input
