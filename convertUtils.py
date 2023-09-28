@@ -1,6 +1,6 @@
 import os
 
-def convertText(filePath, outDir):
+def convertText(filePath, outDir, language):
     fo = open(filePath, "r")    # Opening file to process for writing 
 
     file = os.path.basename(filePath)                   # Getting basename of file
@@ -27,7 +27,7 @@ def convertText(filePath, outDir):
             
         line = fo.readline()    # Reading next line
     
-    finishedFile = write_html_content(HTMLContent, title)
+    finishedFile = write_html_content(HTMLContent, title, language)
     fw.write(finishedFile)
 
     fo.close()      # Closing filestreams
@@ -47,10 +47,10 @@ def parseTitle(openFile, fileName):
     return title
 
 # process MD files
-def write_html_content(new_content, new_title): # this provides the layout of the html with an editable title, content
+def write_html_content(new_content, new_title, language): # this provides the layout of the html with an editable title, content
 
     html_content = f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="{language}">
 <head>
   <meta charset="utf-8">
   <title>{new_title}</title>
@@ -137,7 +137,7 @@ def markdown_to_html_links(content):
 
     return content
 
-def convertMD(userInput, outDir):
+def convertMD(userInput, outDir, language):
     # Create the output directory if it doesn't exist
     if not os.path.exists(outDir):
         os.makedirs(outDir)
@@ -156,7 +156,7 @@ def convertMD(userInput, outDir):
         body = markdownfeat(input_file, input_md_file)
         # Convert the Markdown body to HTML and write it to the output HTML file
 
-    content = write_html_content(body, title)
+    content = write_html_content(body, title, language)
 
     with open(output_html_file, 'w') as output_file:
         output_file.write(content)
