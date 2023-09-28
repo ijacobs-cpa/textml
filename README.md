@@ -46,6 +46,7 @@ or
 | -v, --version | Displays version of the program |
 | -h, --help | Displays a help message |
 | -o, --output <output-location\> | Specifies the location to save converted files, creates a new folder if location doesn't exist, defaults to textml/ |
+| -l, --lang | Specifies a language for the <html lang=...> element in the <html> root element |
 
 ## Examples
 
@@ -140,6 +141,10 @@ CPX = compare THE x register
 
 # Changelog
 
+**0.1.7**
+- Added Optional HTML file Language specification
+    - Updates the `<html lang=...>` attribute in the root `<html>` element. If no language is provided `en-CA` is used by default.
+
 **0.1.6:** (Based on Feedback)
 - Updated argument handling to use argparse
 - Simplified directory deletion using shutil
@@ -150,7 +155,6 @@ CPX = compare THE x register
 0.1.5: (merged pull request from [rabroldan](https://github.com/rabroldan))
 - Added **Markdown file support**
     -  Markdown syntax features, such as italics, bold, headings (Heading 1 and Heading 2), and links. 
-
     - Can correctly format these elements when converting Markdown to HTML. 
     - If you specify a single Markdown file it processes that file and saves the HTML output in the "textml" directory. 
     - If you run the script with a directory path it processes any Markdown files and text files within that directory and saves the generated HTML files in the "textml" directory or other specified directory.
