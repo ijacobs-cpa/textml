@@ -55,9 +55,9 @@ def main():
             currFile = os.path.join(userInput, file)
 
             if ".txt" in file:                                  # Checking if each file's type is supported before converting
-                utils.convertText(currFile, outDir) 
+                utils.convertText(currFile, outDir, lang) 
             elif ".md" in file:                                  # Checking if each file's type is supported before converting
-                utils.convertMD(currFile, outDir) 
+                utils.convertMD(currFile, outDir, lang) 
             else: 
                 print("Error!: Invalid file type for: " + file)
     else:
