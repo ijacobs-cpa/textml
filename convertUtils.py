@@ -88,7 +88,7 @@ def markdownfeat(filestream, input_filename):
                 modified_lines.append(f'<h1>{line[1:].strip()}</h1>')
 
         # Check if the line starts with markdown prefixes
-        elif line.startswith('[') or line.startswith('*') or line.startswith('**') or line.startswith('#') or line.startswith('##') or line.startswith("<h1>"):
+        elif line.startswith('[') or line.startswith('*') or line.startswith('**') or line.startswith('#') or line.startswith('##') or line.startswith("<h1>") or line.startswith('---'):
             modified_lines.append(line)  # Append the line as is (if it does not meet the conditions)
         else:
             # Check if the line is empty
@@ -109,6 +109,8 @@ def markdownfeat(filestream, input_filename):
     # Convert single * to italics
     content = content.replace('*', '<em>', 1)
     content = content.replace('*', '</em>', 1)
+
+    content = content.replace('---', '<hr />')
 
     # Convert links format with HTML links (you need to define the markdown_to_html_links function)
     content = markdown_to_html_links(content)
