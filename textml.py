@@ -7,7 +7,7 @@ import shutil
 import convertUtils as utils
 
 class Metadata:
-    version = "v0.1.6"
+    version = "v0.1.7"
 
 def directory_setup(dir):
     if os.path.isdir(dir):         # Check if output dir exists

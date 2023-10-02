@@ -35,18 +35,12 @@ or
 
 ## Command Flags
 
-<!-- Available command options:
-```
--v,--version - Displays the version of the program
--h,--help - Displays a help message
-``` -->
-
 | Command   | Description |
 | --------- | ----------- |
 | -v, --version | Displays version of the program |
 | -h, --help | Displays a help message |
-| -o, --output <output-location\> | Specifies the location to save converted files, creates a new folder if location doesn't exist, defaults to textml/ |
-| -l, --lang | Specifies a language for the <html lang=...> element in the <html> root element |
+| -o, --output [location] | Specifies the location to save converted files, creates a new folder if location doesn't exist, defaults to textml/ |
+| -l, --lang [language-code] | Specifies a language for the <html lang=...> element in the <html> root element |
 
 ## Examples
 
@@ -69,6 +63,10 @@ Specifing Output Directory:
 Processing Markdown File : 
 
 `$ python textml.py mdtest.md`
+
+Specifing multiple arguments:
+
+`$ python textml.py myFile.txt -o newDir/ --lang en-US`
 
 ## File Examples
 
@@ -144,6 +142,7 @@ CPX = compare THE x register
 **0.1.7**
 - Added Optional HTML file Language specification
     - Updates the `<html lang=...>` attribute in the root `<html>` element. If no language is provided `en-CA` is used by default.
+- Added conversion of `---` to `<hr/>` in markdown files 
 
 **0.1.6:** (Based on Feedback)
 - Updated argument handling to use argparse
