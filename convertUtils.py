@@ -71,7 +71,7 @@ def markdownfeat(filestream, input_filename):
     fileName = os.path.basename(input_filename)     # Getting the base file
     title = parseTitle(filestream, fileName)  
 
-    if title != os.path.splitext(fileName):     # Writing the title element if it is not a file name
+    if title != os.path.splitext(fileName)[0]:     # Writing the title element if it is not a file name
         modified_lines.append("<h1>" + title + '</h1>\n')   # Writing found title to html
 
     # Read the content of the input file
