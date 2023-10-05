@@ -41,6 +41,7 @@ or
 | -h, --help | Displays a help message |
 | -o, --output [location] | Specifies the location to save converted files, creates a new folder if location doesn't exist, defaults to textml/ |
 | -l, --lang [language-code] | Specifies a language for the <html lang=...> element in the <html> root element |
+| -c, --config [options-configuration] | Specifies all the options in a TOML formatted configuration file instead of having to pass them all as command line arguments every time. |
 
 ## Examples
 
