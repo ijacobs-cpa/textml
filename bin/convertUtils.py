@@ -1,21 +1,21 @@
 import os
 
 def convertText(filePath, outDir, language):
-    fo = open(filePath, "r")    # Opening file to process for writing 
+    readFile = open(filePath, "r")    # Opening file to process for writing 
 
     file = os.path.basename(filePath)                   # Getting basename of file
     newHTMLFile = os.path.splitext(file)[0] + ".html"   # Renaming new file to .html
     writePath = os.path.join(outDir, newHTMLFile)       # Getting new output directory
 
-    fw = open(writePath, 'w')      # Writing new html file to output directory
+    writeFile = open(writePath, 'w')      # Writing new html file to output directory
 
     HTMLContent = ""
-    title = parseTitle(fo, newHTMLFile)         # Getting the title from the file if it exists
+    title = parseTitle(readFile, newHTMLFile)         # Getting the title from the file if it exists
 
     if title != os.path.splitext(newHTMLFile)[0]:       # Writing the title if it is not the filename
         HTMLContent += (" <h1>" + title + "</h1>\n")
 
-    line = fo.readline()
+    line = readFile.readline()
     limiter = 0
     while line:
         if (len(line.rstrip('\n')) > 0):                        # Checking for empty line
@@ -25,13 +25,13 @@ def convertText(filePath, outDir, language):
             HTMLContent += ("  <br />\n")        # Replacing empty line with <br> (limiting to 1 per double newline)
             limiter = 1
             
-        line = fo.readline()    # Reading next line
+        line = readFile.readline()    # Reading next line
     
     finishedFile = write_html_content(HTMLContent, title, language)
-    fw.write(finishedFile)
+    writeFile.write(finishedFile)
 
-    fo.close()      # Closing filestreams
-    fw.close()
+    readFile.close()      # Closing filestreams
+    writeFile.close()
 
 def parseTitle(openFile, fileName):
     title = ""
